@@ -1,11 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using System.Data;
 using System.Data.SqlClient;
 
 namespace WebApplication1.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TodoAppController : ControllerBase
     {
         private IConfiguration _configuration;
@@ -18,7 +22,7 @@ namespace WebApplication1.Controllers
         [Route("GetNotes")]
         public JsonResult GetNotes()
         {
-            string query = "select * from notes";
+            string query = "select id, description from notes"; // Selecciona solo id y description
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("todoAppDBCon");
             SqlDataReader myReader;
@@ -35,6 +39,7 @@ namespace WebApplication1.Controllers
             }
             return new JsonResult(table);
         }
+
 
         [HttpPost]
         [Route("AddNotes")]
