@@ -6,7 +6,7 @@ using System.Data.SqlClient;
 
 namespace WebApplication1.Controllers
 {
-
+  
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]

@@ -79,4 +79,25 @@ public class AuthController : ControllerBase
 
         return Ok(authResponse);
     }
+
+    [HttpPost("ExtendSession")]
+    public async Task<ActionResult> ExtendSession(string userEmail)
+    {
+        // Aquí debes verificar si el userEmail es válido y corresponde a un usuario en tu sistema
+        // Puedes hacer esto consultando tu base de datos u otro medio de almacenamiento seguro
+
+        // Por simplicidad, aquí asumiré que el userEmail es válido y se ha asociado con un usuario
+        var user = await _userRepository.GetUserByEmail(userEmail);
+
+        if (user == null)
+        {
+            return BadRequest("Correo electrónico inválido");
+        }
+
+        // Generar un nuevo token de sesión para el usuario
+        var newSessionToken = _tokenManager.GenerateToken(user);
+
+        // Devolver el nuevo token de sesión
+        return Ok(new { SessionToken = newSessionToken });
+    }
 }
